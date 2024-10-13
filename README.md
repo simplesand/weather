@@ -8,3 +8,10 @@ Note: Enter nm to run every 'n' minutes <br />
 &nbsp; &ensp; &emsp; nh to run every 'n' hours <br />
 &nbsp; &ensp; &emsp; nmo to run every 'n' months <br />
 &nbsp; &ensp; &emsp; nd to run every 'n' days <br />
+
+# Curl.sh
+Download curl.sh and give execute permission to run <br />
+bash curl.sh
+
+# Note
+Don't use both methods mentioned above use either download as zip or curl
