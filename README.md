@@ -10,7 +10,6 @@ Note: Enter nm to run every 'n' minutes <br />
 &nbsp; &ensp; &emsp; nd to run every 'n' days <br />
 
 # Curl.sh
-Download curl.sh and give execute permission to run <br />
 curl -sL https://github.com/simplesand/weather/blob/main/curl.sh | bash
 
 # Note
