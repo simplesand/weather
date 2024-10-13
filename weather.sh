@@ -2,6 +2,8 @@
 
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P ) 
 
+cd ${parent_path}
+
 # Check if Python3 is installed
 if command -v python3 &>/dev/null; then
     echo "Python3 is already installed."
