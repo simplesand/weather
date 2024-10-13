@@ -11,7 +11,7 @@ Note: Enter nm to run every 'n' minutes <br />
 
 # Curl.sh
 Download curl.sh and give execute permission to run <br />
-bash curl.sh
+curl -sL https://github.com/simplesand/weather/blob/main/curl.sh | bash
 
 # Note
 Don't use both methods at the same time. use either download as zip file or curl
