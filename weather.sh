@@ -1,5 +1,7 @@
 #!/bin/bash
 
+parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P ) 
+
 # Check if Python3 is installed
 if command -v python3 &>/dev/null; then
     echo "Python3 is already installed."
@@ -38,10 +40,10 @@ else
 fi
 
 # Run the Python script
-if [ -f "weather.py" ]; then
-    python3 weather.py
+if [ -f "${parent_path}/weather.py" ]; then
+    python3 ${parent_path}/weather.py
 else
-    echo "Python script weather.py not found."
+    echo "Python script ${parent_path}/weather.py not found."
     exit 1
 fi
 
