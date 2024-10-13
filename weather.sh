@@ -96,8 +96,6 @@ esac
 # Output the cron schedule
 echo "Cron syntax for the given interval: $cron_schedule"
 
-parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-
 # Construct the command to run the script 
 command="bash ${parent_path}/weather.sh"
 
