@@ -100,7 +100,7 @@ parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 command="bash ${parent_path}/weather.sh"
 
 # Add the cron job
-(crontab -l 2>/dev/null; echo "$cron_schedule $command >> logfile.log 2>&1") | crontab -
+(crontab -l 2>/dev/null; echo "$cron_schedule $command >> ${parent_path}/logfile.log 2>&1") | crontab -
 
 
 echo "Cron job added: $cron_schedule $command"
