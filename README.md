@@ -14,4 +14,4 @@ Download curl.sh and give execute permission to run <br />
 bash curl.sh
 
 # Note
-Don't use both methods mentioned above use either download as zip or curl
+Don't use both methods at the same time. use either download as zip file or curl
