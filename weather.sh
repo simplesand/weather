@@ -94,8 +94,10 @@ esac
 # Output the cron schedule
 echo "Cron syntax for the given interval: $cron_schedule"
 
+parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+
 # Construct the command to run the script 
-command="bash ${pwd}/weather.sh"
+command="bash ${parent_path}/weather.sh"
 
 # Add the cron job
 (crontab -l 2>/dev/null; echo "$cron_schedule $command >> logfile.log 2>&1") | crontab -
