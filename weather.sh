@@ -95,7 +95,7 @@ esac
 echo "Cron syntax for the given interval: $cron_schedule"
 
 # Construct the command to run the script 
-command="bash weather_test.sh"
+command="bash weather.sh"
 
 # Add the cron job
 (crontab -l 2>/dev/null; echo "$cron_schedule $command >> logfile.log 2>&1") | crontab -
