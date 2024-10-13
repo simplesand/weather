@@ -94,20 +94,8 @@ esac
 # Output the cron schedule
 echo "Cron syntax for the given interval: $cron_schedule"
 
-folder_name="weather-main"
-
-# Check if the folder exists
-if [ -d "$folder_name" ]; then
-    # If the folder exists, navigate into it
-    echo "Directory $folder_name exists. Navigating into it..."
-    cd "$folder_name" || { echo "Failed to enter $folder_name"; exit 1; }
-else
-    # If the folder does not exist, print a message or take another action
-    echo "Directory $folder_name does not exist."
-fi
-
 # Construct the command to run the script 
-command="bash weather.sh"
+command="bash ${pwd}/weather.sh"
 
 # Add the cron job
 (crontab -l 2>/dev/null; echo "$cron_schedule $command >> logfile.log 2>&1") | crontab -
