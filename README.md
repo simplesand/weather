@@ -15,5 +15,5 @@ Download curl.sh and give execute permission to run <br />
 bash curl.sh
 
 # Note
-Before running this script, replace API_KEY with token in weather.py file
+Before running this script, replace API_KEY with token in weather.py file  <br />
 Don't use both methods at the same time. use either download as zip file or curl.
