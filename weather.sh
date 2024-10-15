@@ -78,6 +78,11 @@ else
             if [[ "$minutes" -eq 1 ]]; then
                 cron_schedule="* * * * *"  # Every minute
             else
+               if [[ "$minutes" -gt 59 ]]; then
+                echo "Invalid input: The maximum allowed number of minutes is 59."
+                echo "Error: Could not install the cron job due to an invalid input."
+                exit 1
+               fi
                 cron_schedule="*/$minutes * * * *"  # Every N minutes
             fi
             status=$?
@@ -94,6 +99,11 @@ else
             ;;
         d)  # Days
             days="${interval%?}"  # Extract the number before 'd'
+            if [[ "$days" -gt 30 ]]; then
+                echo "Invalid input: The maximum allowed number of days is 30."
+                echo "Error: Could not install the cron job due to an invalid input."
+                exit 1
+            fi
             cron_schedule="0 0 */$days * *"  # Every N days at midnight
             status=$?
             ;;
