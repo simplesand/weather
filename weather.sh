@@ -67,6 +67,7 @@ if [[ "${interval: -2}" == "mo" ]]; then
         exit 1
     fi
     cron_schedule="0 0 1 */$months *"  # Every N months on the first day
+    status=$?
 
 else
     # Handle single-character time units (m, h, d, w)
@@ -77,6 +78,7 @@ else
                 cron_schedule="* * * * *"  # Every minute
             else
                 cron_schedule="*/$minutes * * * *"  # Every N minutes
+                status=$?
             fi
             ;;
         h)  # Hours
@@ -86,6 +88,7 @@ else
                 exit 1
             fi
             cron_schedule="0 */$hours * * *"  # Every N hours
+            status=$?
             ;;
         d)  # Days
             days="${interval%?}"  # Extract the number before 'd'
@@ -94,6 +97,7 @@ else
         w)  # Weeks (Day of the week: 0=Sunday, 1=Monday, ..., 6=Saturday)
             weeks="${interval%?}"  # Extract the number before 'w'
             cron_schedule="0 0 * * $weeks"  # Run on the N-th day of the week
+            status=$?
             ;;
         *)
             echo "Invalid input. Please use 'm' for minutes, 'h' for hours, 'd' for days, 'mo' for months, or 'w' for day of the week (0-6)."
@@ -109,8 +113,13 @@ echo "Cron syntax for the given interval: $cron_schedule"
 # Construct the command to run the script 
 command="bash ${parent_path}/weather.sh"
 
-# Add the cron job
-(crontab -l 2>/dev/null; echo "$cron_schedule $command >> ${parent_path}/logfile.log 2>&1") | crontab -
+# Check if the case block executed successfully (status is 0)
+if [[ "$status" -eq 0 ]]; then 
+    # Install the cron job
+    (crontab -l 2>/dev/null; echo "$cron_schedule $command >> ${parent_path}/logfile.log 2>&1") | crontab -
+     echo "Cron job installed: $cron_schedule  $command >> ${parent_path}/logfile.log 2>&1"
+else
+    echo "Error: Could not install the cron job due to an invalid input or failure in the case block."
+    exit 1
+fi
 
-
-echo "Cron job added: $cron_schedule $command"
