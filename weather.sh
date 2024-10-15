@@ -78,8 +78,8 @@ else
                 cron_schedule="* * * * *"  # Every minute
             else
                 cron_schedule="*/$minutes * * * *"  # Every N minutes
-                status=$?
             fi
+            status=$?
             ;;
         h)  # Hours
             hours="${interval%?}"  # Extract the number before 'h'
@@ -93,9 +93,14 @@ else
         d)  # Days
             days="${interval%?}"  # Extract the number before 'd'
             cron_schedule="0 0 */$days * *"  # Every N days at midnight
+            status=$?
             ;;
         w)  # Weeks (Day of the week: 0=Sunday, 1=Monday, ..., 6=Saturday)
             weeks="${interval%?}"  # Extract the number before 'w'
+            if [[ "$hours" -gt 6 ]]; then
+                echo "Invalid input: The maximum allowed number of days of week is 6."
+                exit 1
+            fi
             cron_schedule="0 0 * * $weeks"  # Run on the N-th day of the week
             status=$?
             ;;
