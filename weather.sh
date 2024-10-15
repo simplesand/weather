@@ -97,7 +97,7 @@ else
             ;;
         w)  # Weeks (Day of the week: 0=Sunday, 1=Monday, ..., 6=Saturday)
             weeks="${interval%?}"  # Extract the number before 'w'
-            if [[ "$hours" -gt 6 ]]; then
+            if [[ "$weeks" -gt 6 ]]; then
                 echo "Invalid input: The maximum allowed number of days of week is 6."
                 exit 1
             fi
