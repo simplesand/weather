@@ -59,41 +59,49 @@ interval="${interval,,}"
 # Initialize cron schedule variable
 cron_schedule=""
 
-# Check the last character of the input to determine the time unit
-case "${interval: -2}" in
-    mo)  # Months
-        months="${interval%??}"  # Extract the number before 'mo'
-        cron_schedule="0 0 1 */$months *"  # Every N months on the first day
-        ;;
-    w)  # Weeks (Day of week: 0=Sunday, 1=Monday, ..., 6=Saturday)
-        weeks="${interval%?}"  # Extract the number before 'w'
-        cron_schedule="0 0 * * $weeks"  # Run on the N-th day of the week
-        ;;
-    *)
-        case "${interval: -1}" in
-            m)  # Minutes
-                minutes="${interval%?}"  # Extract the number before 'm'
-                if [[ "$minutes" -eq 1 ]]; then
-                    cron_schedule="* * * * *"  # Every minute
-                else
-                    cron_schedule="*/$minutes * * * *"  # Every N minutes
-                fi
-                ;;
-            h)  # Hours
-                hours="${interval%?}"  # Extract the number before 'h'
-                cron_schedule="0 */$hours * * *"  # Every N hours
-                ;;
-            d)  # Days
-                days="${interval%?}"  # Extract the number before 'd'
-                cron_schedule="0 0 */$days * *"  # Every N days at midnight
-                ;;
-            *)
-                echo "Invalid input. Please use 'm' for minutes, 'h' for hours, 'd' for days, 'mo' for months, or 'w' for day of the week (0-6)."
+# Extract the last two characters to check for "mo" (months)
+if [[ "${interval: -2}" == "mo" ]]; then
+    months="${interval%??}"  # Extract the number before 'mo'
+    if [[ "$months" -gt 11 ]]; then
+        echo "Invalid input: The maximum allowed number of months is 11."
+        exit 1
+    fi
+    cron_schedule="0 0 1 */$months *"  # Every N months on the first day
+
+else
+    # Handle single-character time units (m, h, d, w)
+    case "${interval: -1}" in
+        m)  # Minutes
+            minutes="${interval%?}"  # Extract the number before 'm'
+            if [[ "$minutes" -eq 1 ]]; then
+                cron_schedule="* * * * *"  # Every minute
+            else
+                cron_schedule="*/$minutes * * * *"  # Every N minutes
+            fi
+            ;;
+        h)  # Hours
+            hours="${interval%?}"  # Extract the number before 'h'
+            if [[ "$hours" -gt 23 ]]; then
+                echo "Invalid input: The maximum allowed number of hours is 23."
                 exit 1
-                ;;
-        esac
-        ;;
-esac
+            fi
+            cron_schedule="0 */$hours * * *"  # Every N hours
+            ;;
+        d)  # Days
+            days="${interval%?}"  # Extract the number before 'd'
+            cron_schedule="0 0 */$days * *"  # Every N days at midnight
+            ;;
+        w)  # Weeks (Day of the week: 0=Sunday, 1=Monday, ..., 6=Saturday)
+            weeks="${interval%?}"  # Extract the number before 'w'
+            cron_schedule="0 0 * * $weeks"  # Run on the N-th day of the week
+            ;;
+        *)
+            echo "Invalid input. Please use 'm' for minutes, 'h' for hours, 'd' for days, 'mo' for months, or 'w' for day of the week (0-6)."
+            exit 1
+            ;;
+    esac
+fi
+
 
 # Output the cron schedule
 echo "Cron syntax for the given interval: $cron_schedule"
