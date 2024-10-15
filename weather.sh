@@ -64,6 +64,7 @@ if [[ "${interval: -2}" == "mo" ]]; then
     months="${interval%??}"  # Extract the number before 'mo'
     if [[ "$months" -gt 11 ]]; then
         echo "Invalid input: The maximum allowed number of months is 11."
+        echo "Error: Could not install the cron job due to an invalid input."
         exit 1
     fi
     cron_schedule="0 0 1 */$months *"  # Every N months on the first day
@@ -85,6 +86,7 @@ else
             hours="${interval%?}"  # Extract the number before 'h'
             if [[ "$hours" -gt 23 ]]; then
                 echo "Invalid input: The maximum allowed number of hours is 23."
+                echo "Error: Could not install the cron job due to an invalid input."
                 exit 1
             fi
             cron_schedule="0 */$hours * * *"  # Every N hours
@@ -99,6 +101,7 @@ else
             weeks="${interval%?}"  # Extract the number before 'w'
             if [[ "$weeks" -gt 6 ]]; then
                 echo "Invalid input: The maximum allowed number of days of week is 6."
+                echo "Error: Could not install the cron job due to an invalid input."
                 exit 1
             fi
             cron_schedule="0 0 * * $weeks"  # Run on the N-th day of the week
@@ -123,8 +126,5 @@ if [[ "$status" -eq 0 ]]; then
     # Install the cron job
     (crontab -l 2>/dev/null; echo "$cron_schedule $command >> ${parent_path}/logfile.log 2>&1") | crontab -
      echo "Cron job installed: $cron_schedule  $command >> ${parent_path}/logfile.log 2>&1"
-else
-    echo "Error: Could not install the cron job due to an invalid input or failure in the case block."
-    exit 1
 fi
 
